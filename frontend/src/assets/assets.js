@@ -1,5 +1,3 @@
-import dummy_profile from "./dummy_profile.png";
-
 export const dummyResumeData = [
   {
     personal_info: {
@@ -10,7 +8,6 @@ export const dummyResumeData = [
       linkedin: "https://linkedin.com/in/dhammapal-waghmare",
       website: "https://github.com/dhammapal-waghmare",
       profession: "Frontend Developer",
-      image: dummy_profile,
     },
 
     _id: "resume001",
@@ -87,9 +84,6 @@ export const dummyResumeData = [
       },
     ],
 
-    template: "minimal-image",
-    accent_color: "#6366F1",
-
     project: [
       {
         name: "CampusClock - Student Information & Management System",
@@ -106,6 +100,9 @@ export const dummyResumeData = [
         _id: "proj002",
       },
     ],
+
+    template: "simple",
+    accent_color: "#6366F1",
 
     updatedAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
