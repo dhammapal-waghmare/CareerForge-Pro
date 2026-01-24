@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import PersonalInfoForm from "../components/PersonalInfoForm";
+import ProfessionalSummaryForm from "../components/ProfessionalSummaryForm";
 import {
   ArrowLeft,
   ChevronRight,
@@ -133,6 +134,19 @@ const ResumeBuilder = () => {
                   }
                   removeBackground={removeBackground}
                   setRemoveBackground={setRemoveBackground}
+                />
+              )}
+
+              {activeSection.id === "summary" && (
+                <ProfessionalSummaryForm
+                  data={resumeData.professional_summary}
+                  onChange={(data) =>
+                    setResumeData((prev) => ({
+                      ...prev,
+                      professional_summary: data,
+                    }))
+                  }
+                  setResumeData={setResumeData}
                 />
               )}
             </div>
