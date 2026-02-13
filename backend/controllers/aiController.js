@@ -1,7 +1,7 @@
 import ai from "../configs/ai.js";
 import Resume from "../models/Resume.js";
 
-//  Enhance professional summary using AI
+//  Enhance_professional summary using AI
 
 export const enhanceProfessionalSummary = async (req, res) => {
   try {

@@ -6,6 +6,8 @@ import Layout from "./pages/Layout";
 import Dashboard from "./pages/Dashboard";
 import ResumeBuilder from "./pages/ResumeBuilder";
 import Preview from "./pages/Preview";
+import CoverLetterBuilder from "./pages/CoverLetterBuilder";
+import CoverLetterPreview from "./pages/CoverLetterPreview";
 import Login from "./pages/Login";
 import api from "./configs/api";
 import { login, setLoading } from "./app/features/authSlice";
@@ -48,6 +50,9 @@ const App = () => {
       <Route path="app" element={<Layout />}>
         <Route index element={<Dashboard />} />
         <Route path="builder/:resumeId" element={<ResumeBuilder />} />
+        <Route path="cover-letter" element={<CoverLetterBuilder />} />
+        <Route path="cover-letter/:coverLetterId" element={<CoverLetterBuilder />} />
+        <Route path="cover-letter-preview/:coverLetterId" element={<CoverLetterPreview />} />
       </Route>
       <Route path="view/:resumeId" element={<Preview />} />
     </Routes>
