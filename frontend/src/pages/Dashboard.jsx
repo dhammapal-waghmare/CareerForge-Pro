@@ -5,6 +5,7 @@ import {
   UploadCloud,
   TrashIcon,
   X,
+  FileText,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -20,8 +21,10 @@ const Dashboard = () => {
   const colors = ["#9333ea", "#0284c7", "#6366f1", "#2563eb", "#4f46e5"];
 
   const [allResumes, setAllResumes] = useState([]);
+  const [allCoverLetters, setAllCoverLetters] = useState([]);
   const [showCreateResume, setShowCreateResume] = useState(false);
   const [showUploadResume, setShowUploadResume] = useState(false);
+
 
   const [title, setTitle] = useState("");
   const [resumeFile, setResumeFile] = useState(null);
@@ -39,8 +42,22 @@ const Dashboard = () => {
     }
   };
 
+  /* ================= LOAD COVER LETTERS ================= */
+  const loadAllCoverLetters = async () => {
+    try {
+      const { data } = await api.get("/api/coverletters/all", {
+        headers: { Authorization: token },
+      });
+      setAllCoverLetters(data.coverLetters || []);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+
   useEffect(() => {
     loadAllResumes();
+    loadAllCoverLetters();
   }, []);
 
   /* ================= CREATE RESUME ================= */
@@ -59,6 +76,11 @@ const Dashboard = () => {
     } catch (error) {
       toast.error(error.message);
     }
+  };
+
+  /* ================= CREATE COVER LETTER ================= */
+  const createCoverLetter = () => {
+    navigate("/app/cover-letter");
   };
 
   /* ================= UPLOAD RESUME ================= */
@@ -126,6 +148,21 @@ const Dashboard = () => {
     }
   };
 
+  const deleteCoverLetter = async (id) => {
+    if (!window.confirm("Delete this cover letter?")) return;
+
+    try {
+      await api.delete(`/api/coverletters/delete/${id}`, {
+        headers: { Authorization: token },
+      });
+
+      setAllCoverLetters((prev) => prev.filter((c) => c._id !== id));
+      toast.success("Cover letter deleted");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-100">
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -149,6 +186,15 @@ const Dashboard = () => {
             <UploadCloud className="size-12" />
             Upload Resume
           </button>
+
+          <button
+            onClick={createCoverLetter}
+            className="w-36 h-48 flex flex-col items-center justify-center gap-3
+            border-2 border-dashed rounded-xl bg-white text-indigo-600 hover:bg-indigo-50"
+          >
+            <FileText className="size-12" />
+            Create Cover Letter
+          </button>
         </div>
 
         <hr className="my-8" />
@@ -159,7 +205,12 @@ const Dashboard = () => {
         </h2>
 
         <div className="flex gap-4 flex-wrap">
-          {allResumes.map((resume, i) => (
+          {allResumes.length === 0 ? (
+            <p className="text-gray-500 text-sm">
+              No resumes yet. Create or upload a resume to get started!
+            </p>
+          ) : (
+            allResumes.map((resume, i) => (
             <div
               key={resume._id}
               onClick={() => navigate(`/app/builder/${resume._id}`)}
@@ -180,7 +231,46 @@ const Dashboard = () => {
                 className="text-red-500 mt-3 hover:scale-110"
               />
             </div>
-          ))}
+              ))
+            )}
+        </div>
+
+        <hr className="my-8" />
+
+        {/* COVER LETTER LIST */}
+        <h2 className="text-xl font-semibold text-indigo-600 mb-4">
+          Your Cover Letters
+        </h2>
+
+        <div className="flex gap-4 flex-wrap">
+          {allCoverLetters.length === 0 ? (
+            <p className="text-gray-500 text-sm">
+              No cover letters yet. Create a cover letter to get started!
+            </p>
+          ) : (
+            allCoverLetters.map((letter, i) => (
+              <div
+                key={letter._id}
+                onClick={() => navigate(`/app/cover-letter/${letter._id}`)}
+                className="w-36 h-48 rounded-xl border cursor-pointer
+                flex flex-col items-center justify-center hover:shadow-md"
+                style={{ background: `${colors[(i + 2) % colors.length]}20` }}
+              >
+                <FileText />
+                <p className="text-sm mt-2 text-center px-2">
+                  {letter.jobName}
+                </p>
+
+                <TrashIcon
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteCoverLetter(letter._id);
+                  }}
+                  className="text-red-500 mt-3 hover:scale-110"
+                />
+              </div>
+            ))
+          )}
         </div>
 
         {/* CREATE MODAL */}

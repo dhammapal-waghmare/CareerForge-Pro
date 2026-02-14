@@ -2,6 +2,7 @@ import express from "express";
 import {
   getUserById,
   getUserResumes,
+  getUserCoverLetters,
   loginUser,
   registerUser,
 } from "../controllers/userController.js";
@@ -13,5 +14,6 @@ userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
 userRouter.get("/data", protect, getUserById);
 userRouter.get("/resumes", protect, getUserResumes);
+userRouter.get("/coverletters", protect, getUserCoverLetters);
 
 export default userRouter;

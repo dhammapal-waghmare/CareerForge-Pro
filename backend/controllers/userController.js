@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Resume from "../models/Resume.js";
+import CoverLetter from "../models/CoverLetter.js";
 const generateToken = (userId) => {
   const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
     expiresIn: "7d",
@@ -103,6 +104,19 @@ export const getUserResumes = async (req, res) => {
     // return user resumes
     const resumes = await Resume.find({ userId });
     return res.status(200).json({ resumes });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+//controller for getting user cover letters
+export const getUserCoverLetters = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    // return user cover letters
+    const coverLetters = await CoverLetter.find({ userId });
+    return res.status(200).json({ coverLetters });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
