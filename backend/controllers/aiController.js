@@ -1,7 +1,7 @@
 import ai from "../configs/ai.js";
 import Resume from "../models/Resume.js";
 
-//  Enhance_professional summary using AI
+//  Enhance professional summary using AI
 
 export const enhanceProfessionalSummary = async (req, res) => {
   try {
@@ -143,6 +143,70 @@ JSON format:
     });
 
     return res.status(201).json({ resumeId: newResume._id });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// Generate cover letter using AI
+
+export const generateCoverLetter = async (req, res) => {
+  try {
+    const { jobName, jobDescription } = req.body;
+
+    if (!jobName || !jobDescription) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const response = await ai.chat.completions.create({
+      model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are an expert cover letter writer. Write a professional, compelling cover letter based on the job details provided. The cover letter should be well-structured with an introduction, body paragraphs highlighting relevant skills and experience, and a strong conclusion. Make it persuasive and tailored to the specific role. Format it as a professional letter with proper spacing.",
+        },
+        {
+          role: "user",
+          content: `Job Title: ${jobName}\n\nJob Description:\n${jobDescription}\n\nPlease write a professional cover letter for this position.`,
+        },
+      ],
+    });
+
+    const content = response.choices[0].message.content;
+    return res.status(200).json({ content });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// Enhance cover letter content using AI
+
+export const enhanceCoverLetter = async (req, res) => {
+  try {
+    const { content } = req.body;
+
+    if (!content) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const response = await ai.chat.completions.create({
+      model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are an expert cover letter writer. Enhance and improve the provided cover letter content. Make it more professional, compelling, and impactful. Ensure proper grammar, strong action verbs, and persuasive language. Maintain the original structure but elevate the quality. Return only the enhanced cover letter text.",
+        },
+        {
+          role: "user",
+          content: content,
+        },
+      ],
+    });
+
+    const enhancedContent = response.choices[0].message.content;
+    return res.status(200).json({ enhancedContent });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
