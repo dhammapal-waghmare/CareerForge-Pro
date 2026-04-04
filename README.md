@@ -83,6 +83,24 @@ CareerForge-Pro/
   
 </pre>
 
+<h2>Demo</h2>
+
+<p align="center">
+  <img src="./Demo/1-Home.jpeg" width="45%" />
+  <img src="./Demo/2-About.jpeg" width="45%" />
+  <br/>
+  <img src="./Demo/3-Contact.jpeg" width="45%" />
+  <img src="./Demo/4-SignUp.jpeg" width="45%" />
+  <br/>
+  <img src="./Demo/5-SignIn.jpeg" width="45%" />
+  <img src="./Demo/6-Dashboard.jpeg" width="45%" />
+  <br/>
+  <img src="./Demo/7-Personal-Info.jpeg" width="45%" />
+  <img src="./Demo/resume-demo.jpeg" width="45%" />
+  <br/>
+  <img src="./Demo/cover-letter.jpeg" width="45%" />
+</p>
+
 <h3>Team Members</h3>
 <ol>
   <li>Dhammapal Jalindar Waghmare</li>
